@@ -1,17 +1,16 @@
 const User = require("../models/user.model");
 
-
 exports.registerNewUser = async (req, res) => {
   try {
     const isUser = await User.find({ email: req.body.email });
-    console.log(isUser);
     if (isUser.length >= 1) {
       return res.status(409).json({ message: "Atenção! E-mail em uso!" });
     }
 
     const newUser = new User(req.body);
     const user = await newUser.save();
-    const token = await newUser.generateAuthToken(); 
+    const token = await newUser.generateAuthToken();
+
     return res.status(201).json({ message: "Sucesso!", user, token });
   } catch (err) {
     return res.status(400).json({ err });
