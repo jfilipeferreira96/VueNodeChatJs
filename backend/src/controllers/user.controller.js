@@ -21,6 +21,7 @@ exports.loginUser = async (req, res) => {
   try {
     const { email } = req.body;
     const { password } = req.body;
+
     const user = await User.findByCredentials(email, password);
     if (!user) {
       return res.status(401).json({
@@ -30,6 +31,7 @@ exports.loginUser = async (req, res) => {
     const token = await user.generateAuthToken();
     return res.status(201).json({ message: "Sucesso!", user, token });
   } catch (err) {
+    console.log(err);
     return res.status(400).json({ err });
   }
 };
