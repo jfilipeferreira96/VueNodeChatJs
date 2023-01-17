@@ -5,7 +5,6 @@ const mongooseConnection = require("./config/mongoose.config");
 
 const app = express();
 
-// ==> Rotas da API:
 const routes = require("./routes/index");
 const userRoutes = require("./routes/user.routes");
 
@@ -15,7 +14,6 @@ app.use(express.json({ type: "application/vnd.api+json" }));
 app.use(morgan("dev"));
 app.use(cors());
 
-// ==> Retornando a conexão via mongoose via external file usando 'app.set()'
 app.set("mongoose connection", mongooseConnection);
 
 app.use(routes);
