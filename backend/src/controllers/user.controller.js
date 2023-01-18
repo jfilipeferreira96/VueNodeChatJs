@@ -22,7 +22,7 @@ module.exports.login = async (req, res, next) => {
 module.exports.register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
-
+    console.log(username, email, password);
     const usernameCheck = await User.findOne({ username });
     if (usernameCheck) return res.json({ msg: "Username already used", status: false });
 
