@@ -1,16 +1,16 @@
 <template>
   <section>
-    <form action="">
+    <form @submit.prevent="login">
       <div className="brand">
         <img :src="require('../assets/logo1.png')" />
         <h1>Log in</h1>
       </div>
-      <input type="text" placeholder="Username" name="username" min="3" />
-      <input type="password" placeholder="Password" name="password" />
+      <input type="text" v-model="username" placeholder="Username" name="username" min="3" />
+      <input type="password" v-model="password" placeholder="Password" name="password" />
       <button type="submit">Log In</button>
       <span>
         Don't have an account ?
-        <router-link to="/register" replace>Create One.</router-link>
+        <router-link :to="{ name: 'register' }" replace>Create One.</router-link>
       </span>
     </form>
   </section>
@@ -20,6 +20,25 @@
 export default {
   name: "LoginView",
   components: {},
+  data: function () {
+    return {
+      username: "",
+      password: "",
+    };
+  },
+  methods: {
+    login() {
+      console.log(this.username, this.password);
+      if (this.username != "" && this.password != "") {
+        //pedido async
+        this.$toast.success(`Hey! I'm here`);
+
+        console.log("async");
+      } else {
+        //toast.error("Email and Password is required.", toastOptions);
+      }
+    },
+  },
 };
 </script>
 

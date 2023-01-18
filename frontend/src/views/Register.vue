@@ -12,7 +12,7 @@
       <button type="submit">Create User</button>
       <span>
         Already have an account ?
-        <span><router-link to="/" replace>Login.</router-link></span>
+        <span><router-link :to="{ name: 'login' }" replace>Login.</router-link></span>
       </span>
     </form>
   </section>

@@ -18,16 +18,47 @@ const routes = [
     },
     component: () => import("../views/Register.vue"),
   },
+  {
+    path: "/chat",
+    name: "chat",
+    meta: {
+      title: "Chat",
+      requiresAuth: true,
+    },
+    component: () => import("../views/Register.vue"),
+  },
+  // Redirect to 404 page, if no match found
+  {
+    path: "/:pathMatch(.*)*",
+    name: "PageNotFound",
+    meta: {
+      title: "404 - Error Page",
+    },
+    component: () => import("../views/404.vue"),
+  },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
+  base: process.env.BASE_URL,
   routes,
 });
 
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title}`;
   next();
+  /*   if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+
+    if (localStorage.getItem("login-token")) {
+      next({ name: "Login" });
+    } else {
+      next(); // go to wherever I'm going
+    }
+  } else {
+    next(); // does not require auth
+  } */
 });
 
 export default router;
