@@ -1,41 +1,85 @@
 const User = require("../models/user.model");
+const bcrypt = require("bcrypt");
 
-exports.registerNewUser = async (req, res) => {
+module.exports.login = async (req, res, next) => {
   try {
-    const isUser = await User.find({ email: req.body.email });
-    if (isUser.length >= 1) {
-      return res.status(409).json({ message: "Atenção! E-mail em uso!" });
-    }
+    const { username, password } = req.body;
 
-    const newUser = new User(req.body);
-    const user = await newUser.save();
-    const token = await newUser.generateAuthToken();
+    const user = await User.findOne({ username });
 
-    return res.status(201).json({ message: "Sucesso!", user, token });
-  } catch (err) {
-    return res.status(400).json({ err });
+    if (!user) return res.json({ msg: "Incorrect Username or Password", status: false });
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) return res.json({ msg: "Incorrect Username or Password", status: false });
+
+    delete user.password; //  removo a password para nao a expor
+
+    return res.json({ status: true, user });
+  } catch (ex) {
+    next(ex);
   }
 };
 
-exports.loginUser = async (req, res) => {
+module.exports.register = async (req, res, next) => {
   try {
-    const { email } = req.body;
-    const { password } = req.body;
+    const { username, email, password } = req.body;
 
-    const user = await User.findByCredentials(email, password);
-    if (!user) {
-      return res.status(401).json({
-        error: "Erro! Verifique as suas credenciais!",
-      });
-    }
-    const token = await user.generateAuthToken();
-    return res.status(201).json({ message: "Sucesso!", user, token });
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json({ err });
+    const usernameCheck = await User.findOne({ username });
+    if (usernameCheck) return res.json({ msg: "Username already used", status: false });
+
+    const emailCheck = await User.findOne({ email });
+    if (emailCheck) return res.json({ msg: "Email already used", status: false });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      email,
+      username,
+      password: hashedPassword,
+    });
+
+    delete user.password; //  removo a password para nao a expor
+
+    return res.json({ status: true, user });
+  } catch (ex) {
+    next(ex);
   }
 };
 
-exports.returnUserProfile = async (req, res) => {
-  await res.json(req.userData);
+module.exports.getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find({ _id: { $ne: req.params.id } }).select(["email", "username", "avatarImage", "_id"]);
+
+    console.log(users);
+    return res.json(users);
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.setAvatar = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const avatarImage = req.body.image;
+
+    const userData = await User.findByIdAndUpdate(userId, { isAvatarImageSet: true, avatarImage }, { new: true });
+
+    return res.json({
+      isSet: userData.isAvatarImageSet,
+      image: userData.avatarImage,
+    });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.logOut = (req, res, next) => {
+  try {
+    if (!req.params.id) {
+      return res.json({ msg: "User id is required " });
+    }
+
+    onlineUsers.delete(req.params.id);
+    return res.status(200).send();
+  } catch (ex) {
+    next(ex);
+  }
 };

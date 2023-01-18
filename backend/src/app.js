@@ -4,9 +4,7 @@ const morgan = require("morgan");
 const mongooseConnection = require("./config/mongoose.config");
 
 const app = express();
-
-const routes = require("./routes/index");
-const userRoutes = require("./routes/user.routes");
+const authRoutes = require("./routes/user.routes");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -16,7 +14,6 @@ app.use(cors());
 
 app.set("mongoose connection", mongooseConnection);
 
-app.use(routes);
-app.use("/api/v1/", userRoutes);
+app.use("/api/auth", authRoutes);
 
 module.exports = app;
