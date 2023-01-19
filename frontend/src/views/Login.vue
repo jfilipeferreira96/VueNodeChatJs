@@ -17,11 +17,16 @@
 </template>
 
 <script>
-import {authService} from '../services/auth.service';
+import { authService } from "../services/auth.service";
 
 export default {
   name: "LoginView",
   components: {},
+  beforeCreate() {
+    if (localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)) {
+      this.$router.push({ name: "chat" });
+    }
+  },
   data: function () {
     return {
       username: "",
@@ -34,18 +39,18 @@ export default {
       if (this.username != "" && this.password != "") {
         //pedido async
         const data = await authService.login(this.username, this.password);
-        if (data.status){
+        if (data.status) {
           this.$toast.success(`Success!`);
           //redirect para a página do chat
-          localStorage.setItem(process.env.LOCALHOST_KEY, JSON.stringify(data.user));
-          this.$router.push({ name: 'chat' })
+          localStorage.setItem(process.env.VUE_APP_LOCALHOSTKEY, JSON.stringify(data.user));
+          this.$router.push({ name: "chat" });
         } else {
           this.$toast.error(data.msg);
         }
       } else {
-         this.$toast.success(`Empty fields`);
+        this.$toast.error(`Empty fields`);
       }
-    }
+    },
   },
 };
 </script>

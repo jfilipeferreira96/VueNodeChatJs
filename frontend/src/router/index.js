@@ -25,7 +25,7 @@ const routes = [
       title: "Chat",
       requiresAuth: true,
     },
-    component: () => import("../views/Register.vue"),
+    component: () => import("../views/Chat.vue"),
   },
   // Redirect to 404 page, if no match found
   {
@@ -47,18 +47,17 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title}`;
   next();
-  /*   if (to.matched.some((record) => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-
-    if (localStorage.getItem("login-token")) {
+    if (localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)) {
       next({ name: "Login" });
     } else {
       next(); // go to wherever I'm going
     }
   } else {
     next(); // does not require auth
-  } */
+  }
 });
 
 export default router;

@@ -1,17 +1,17 @@
-import API_URL, { loginRoute } from "./config.js";
+import { loginRoute, registerRoute } from "./config.js";
 
 export const authService = {
-  async login(username, password){
-    console.log('entrei')
+  async login(username, password) {
+    console.log("entrei");
     const response = await fetch(loginRoute, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify({username, password}),
+      body: JSON.stringify({ username, password }),
     });
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     return data;
   },
 
@@ -21,14 +21,14 @@ export const authService = {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify({username, email, password}),
+      body: JSON.stringify({ username, email, password }),
     });
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     return data;
   },
 
-  async getInfo(token) {
+  /*   async getInfo(token) {
     const response = await fetch(`${API_URL}/auth`, {
       method: "GET",
       headers: {
@@ -37,7 +37,7 @@ export const authService = {
       },
     });
     return await response.json();
-  },
+  }, */
 };
 
 export default authService;

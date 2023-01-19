@@ -1,23 +1,28 @@
 <template>
-  <section>
-    Welcome to the Chat page
-  </section>
+  <section>Welcome to the Chat page</section>
 </template>
 
 <script>
 export default {
   name: "Chat",
   components: {},
-  methods:{
-    checkLogin: function (){
-      console.log('Validations')
-    },
-
-     
+  data: function () {
+    return {
+      currentUser: {},
+    };
   },
- beforeMount(){
-   this.checkLogin();
-
+  /*   async beforeMount() {
+    if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+      this.$router.push({ name: "login" });
+    } else {
+      this.currentUser = await JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+      console.log(this.currentUser);
+    }
+  }, */
+  methods: {
+    checkLogin: function () {
+      console.log("Validations");
+    },
   },
 };
 </script>

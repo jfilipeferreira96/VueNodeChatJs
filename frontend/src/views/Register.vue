@@ -1,14 +1,14 @@
 <template>
   <section>
-    <form action="">
+    <form @submit.prevent="register">
       <div className="brand">
         <img :src="require('../assets/logo1.png')" />
         <h1>Register</h1>
       </div>
-      <input type="text" placeholder="Username" name="username" />
-      <input type="email" placeholder="Email" name="email" />
-      <input type="password" placeholder="Password" name="password" />
-      <input type="password" placeholder="Confirm Password" name="confirmPassword" />
+      <input type="text" placeholder="Username" name="username" v-model="username" />
+      <input type="email" placeholder="Email" name="email" v-model="email" />
+      <input type="password" placeholder="Password" name="password" v-model="password" />
+      <input type="password" placeholder="Confirm Password" name="confirmPassword" v-model="confirmPassword" />
       <button type="submit">Create User</button>
       <span>
         Already have an account ?
@@ -19,11 +19,16 @@
 </template>
 
 <script>
-import {authService} from '../services/auth.service';
+import { authService } from "../services/auth.service";
 
 export default {
   name: "RegisterView",
   components: {},
+  beforeCreate() {
+    if (localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)) {
+      tthis.$router.push({ name: "chat" });
+    }
+  },
   data: function () {
     return {
       username: "",
@@ -33,25 +38,6 @@ export default {
     };
   },
   methods: {
-    async register() {
-      console.log(this.username, this.password);
-      if (this.username != "" && this.email != "" && this.password != "" && this.confirmPassword != ""){
-        if (this.handleValidation()){
-          //pedido async
-          const data = await authService.register(this.username, this.email, this.password);
-          if (data.status){
-            this.$toast.success(`Success!`);
-            //redirect para a página do chat
-            localStorage.setItem(process.env.LOCALHOST_KEY, JSON.stringify(data.user));
-            this.$router.push({ name: 'chat' })
-          } else {
-            this.$toast.error(data.msg);
-          }
-        }
-      } else {
-         this.$toast.success(`Empty fields`);
-      }
-    },
     handleValidation() {
       if (this.password !== this.confirmPassword) {
         this.$toast.error("Password and confirm password should be same.");
@@ -59,7 +45,7 @@ export default {
       } else if (this.username.length < 3) {
         this.$toast.error("Username should be greater than 3 characters.");
         return false;
-      } else if (this.password.length < 8) {
+      } else if (this.password.length < 6) {
         this.$toast.error("Password should be equal or greater than 6 characters.");
         return false;
       } else if (this.email === "") {
@@ -67,7 +53,27 @@ export default {
         return false;
       }
       return true;
-    }
+    },
+    async register() {
+      console.log(this.username, this.password);
+      if (this.username != "" && this.email != "" && this.password != "" && this.confirmPassword != "") {
+        if (this.handleValidation() === true) {
+          //pedido async
+          const data = await authService.register(this.username, this.email, this.password);
+          if (data.status) {
+            this.$toast.success(`Success!`);
+            //redirect para a página do chat
+            localStorage.setItem(process.env.VUE_APP_LOCALHOSTKEY, JSON.stringify(data.user));
+            this.$router.push({ name: "chat" });
+          } else {
+            this.$toast.error(data.msg);
+          }
+        }
+        return;
+      } else {
+        this.$toast.error(`Empty fields`);
+      }
+    },
   },
 };
 </script>
