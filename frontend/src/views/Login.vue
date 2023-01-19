@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import {authService} from '../services/auth.service';
+
 export default {
   name: "LoginView",
   components: {},
@@ -27,17 +29,23 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       console.log(this.username, this.password);
       if (this.username != "" && this.password != "") {
         //pedido async
-        this.$toast.success(`Hey! I'm here`);
-
-        console.log("async");
+        const data = await authService.login(this.username, this.password);
+        if (data.status){
+          this.$toast.success(`Success!`);
+          //redirect para a página do chat
+          localStorage.setItem(process.env.LOCALHOST_KEY, JSON.stringify(data.user));
+          this.$router.push({ name: 'chat' })
+        } else {
+          this.$toast.error(data.msg);
+        }
       } else {
-        //toast.error("Email and Password is required.", toastOptions);
+         this.$toast.success(`Empty fields`);
       }
-    },
+    }
   },
 };
 </script>

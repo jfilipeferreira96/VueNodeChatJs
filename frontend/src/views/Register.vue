@@ -19,9 +19,56 @@
 </template>
 
 <script>
+import {authService} from '../services/auth.service';
+
 export default {
-  name: "LoginView",
+  name: "RegisterView",
   components: {},
+  data: function () {
+    return {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    };
+  },
+  methods: {
+    async register() {
+      console.log(this.username, this.password);
+      if (this.username != "" && this.email != "" && this.password != "" && this.confirmPassword != ""){
+        if (this.handleValidation()){
+          //pedido async
+          const data = await authService.register(this.username, this.email, this.password);
+          if (data.status){
+            this.$toast.success(`Success!`);
+            //redirect para a página do chat
+            localStorage.setItem(process.env.LOCALHOST_KEY, JSON.stringify(data.user));
+            this.$router.push({ name: 'chat' })
+          } else {
+            this.$toast.error(data.msg);
+          }
+        }
+      } else {
+         this.$toast.success(`Empty fields`);
+      }
+    },
+    handleValidation() {
+      if (this.password !== this.confirmPassword) {
+        this.$toast.error("Password and confirm password should be same.");
+        return false;
+      } else if (this.username.length < 3) {
+        this.$toast.error("Username should be greater than 3 characters.");
+        return false;
+      } else if (this.password.length < 8) {
+        this.$toast.error("Password should be equal or greater than 6 characters.");
+        return false;
+      } else if (this.email === "") {
+        this.$toast.error("Email is required.");
+        return false;
+      }
+      return true;
+    }
+  },
 };
 </script>
 

@@ -1,37 +1,31 @@
 import API_URL, { loginRoute } from "./config.js";
 
 export const authService = {
-  async login(payload) {
+  async login(username, password){
+    console.log('entrei')
     const response = await fetch(loginRoute, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({username, password}),
     });
-    if (response.ok) {
-      const data = await response.json();
-      const token = response.headers.get("Authorization");
-      const profile = data.body;
-      return { token, profile };
-    } else {
-      throw Error(handleResponses(response.status));
-    }
+    const data = await response.json();
+    console.log(data)
+    return data;
   },
 
-  async register(payload) {
-    const response = await fetch(`${API_URL}/users`, {
+  async register(username, email, password) {
+    const response = await fetch(registerRoute, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({username, email, password}),
     });
-    if (response.ok) {
-      return await response.json();
-    } else {
-      throw Error(handleResponses(response.status));
-    }
+    const data = await response.json();
+    console.log(data)
+    return data;
   },
 
   async getInfo(token) {
@@ -45,24 +39,5 @@ export const authService = {
     return await response.json();
   },
 };
-
-function handleResponses(code) {
-  let message = "";
-  switch (code) {
-    case 401:
-      message = "Não está autorizado a executar esta ação!";
-      break;
-    case 403:
-      message = "Dados das credenciais errados!";
-      break;
-    case 406:
-      message = "Dados do utilizador já existentes!";
-      break;
-    default:
-      message = "Mensagem desconhecida";
-      break;
-  }
-  return message;
-}
 
 export default authService;
