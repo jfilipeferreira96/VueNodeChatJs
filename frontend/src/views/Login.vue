@@ -1,7 +1,7 @@
 <template>
   <section>
     <form @submit.prevent="login">
-      <div className="brand">
+      <div class="brand">
         <img :src="require('../assets/logo1.png')" />
         <h1>Log in</h1>
       </div>
@@ -22,11 +22,6 @@ import { authService } from "../services/auth.service";
 export default {
   name: "LoginView",
   components: {},
-  beforeCreate() {
-    if (localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)) {
-      this.$router.push({ name: "chat" });
-    }
-  },
   data: function () {
     return {
       username: "",

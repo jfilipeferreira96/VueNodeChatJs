@@ -46,12 +46,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title}`;
-  next();
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)) {
-      next({ name: "Login" });
+    if (!localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)) {
+      next({ name: "login" });
     } else {
       next(); // go to wherever I'm going
     }

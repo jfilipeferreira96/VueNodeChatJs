@@ -1,7 +1,7 @@
 <template>
   <section>
     <form @submit.prevent="register">
-      <div className="brand">
+      <div class="brand">
         <img :src="require('../assets/logo1.png')" />
         <h1>Register</h1>
       </div>
@@ -24,11 +24,6 @@ import { authService } from "../services/auth.service";
 export default {
   name: "RegisterView",
   components: {},
-  beforeCreate() {
-    if (localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)) {
-      tthis.$router.push({ name: "chat" });
-    }
-  },
   data: function () {
     return {
       username: "",

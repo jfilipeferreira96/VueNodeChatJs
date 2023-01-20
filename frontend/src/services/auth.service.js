@@ -1,4 +1,4 @@
-import { loginRoute, registerRoute } from "./config.js";
+import { loginRoute, registerRoute, setAvatarRoute } from "./config.js";
 
 export const authService = {
   async login(username, password) {
@@ -28,16 +28,19 @@ export const authService = {
     return data;
   },
 
-  /*   async getInfo(token) {
-    const response = await fetch(`${API_URL}/auth`, {
-      method: "GET",
+  async setAvatar(id, avatar) {
+    const response = await fetch(setAvatarRoute + '/' + id, {
+      method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
+        "Content-Type": "application/json;charset=utf-8",
       },
+      body: JSON.stringify({image: avatar}),
     });
-    return await response.json();
-  }, */
+    const data = await response.json();
+    console.log(data);
+    return data;
+  },
+
 };
 
 export default authService;

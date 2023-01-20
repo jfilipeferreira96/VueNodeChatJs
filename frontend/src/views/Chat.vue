@@ -1,27 +1,35 @@
 <template>
-  <section>Welcome to the Chat page</section>
+  <section>
+    <!-- Select User Avatar -->
+    <div v-if="currentUser.isAvatarImageSet === false">
+      <SetAvatar />
+    </div>
+
+    <!-- Chat Div -->
+    <div v-else>
+      <h1>ola ja tens imagem</h1>
+    </div>
+
+  </section>
 </template>
 
 <script>
+import SetAvatar from '../components/SetAvatar.vue'
+
 export default {
   name: "Chat",
-  components: {},
+  components: {
+    SetAvatar
+  },
   data: function () {
     return {
-      currentUser: {},
+      currentUser: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
     };
   },
-  /*   async beforeMount() {
-    if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      this.$router.push({ name: "login" });
-    } else {
-      this.currentUser = await JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
-      console.log(this.currentUser);
-    }
-  }, */
-  methods: {
+  methods: {  
     checkLogin: function () {
       console.log("Validations");
+      console.log(this.currentUser.username)
     },
   },
 };
