@@ -11,9 +11,7 @@ module.exports.login = async (req, res, next) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) return res.json({ msg: "Incorrect Username or Password", status: false });
 
-    delete user.password; //  removo a password para nao a expor
-
-    return res.json({ status: true, user });
+    return res.json({ status: true, user: { username: user.username, email: user.email, avatarImage: user.avatarImage, isAvatarImageSet: user.isAvatarImageSet } });
   } catch (ex) {
     next(ex);
   }
@@ -36,9 +34,7 @@ module.exports.register = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    delete user.password; //  removo a password para nao a expor
-
-    return res.json({ status: true, user });
+    return res.json({ status: true, user: { username: user.username, email: user.email, avatarImage: user.avatarImage, isAvatarImageSet: user.isAvatarImageSet } });
   } catch (ex) {
     next(ex);
   }
@@ -59,9 +55,9 @@ module.exports.setAvatar = async (req, res, next) => {
   try {
     const userId = req.params.id;
     const avatarImage = req.body.image;
-    
+
     const userData = await User.findByIdAndUpdate(userId, { isAvatarImageSet: true, avatarImage }, { new: true });
-    
+
     return res.json({
       isSet: userData.isAvatarImageSet,
       image: userData.avatarImage,
@@ -78,7 +74,7 @@ module.exports.logOut = (req, res, next) => {
     }
 
     onlineUsers.delete(req.params.id);
-    return res.status(200).send({status: true});
+    return res.status(200).send({ status: true });
   } catch (ex) {
     next(ex);
   }
