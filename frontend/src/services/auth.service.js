@@ -1,8 +1,7 @@
-import { loginRoute, registerRoute, setAvatarRoute } from "./config.js";
+import { loginRoute, registerRoute, setAvatarRoute, logoutRoute } from "./config.js";
 
 export const authService = {
   async login(username, password) {
-    console.log("entrei");
     const response = await fetch(loginRoute, {
       method: "POST",
       headers: {
@@ -11,7 +10,14 @@ export const authService = {
       body: JSON.stringify({ username, password }),
     });
     const data = await response.json();
-    console.log(data);
+    
+    return data;
+  },
+
+  async logout(id) {
+    const response = await fetch(logoutRoute + '/' + id);
+    const data = await response.json();
+    
     return data;
   },
 
@@ -24,7 +30,7 @@ export const authService = {
       body: JSON.stringify({ username, email, password }),
     });
     const data = await response.json();
-    console.log(data);
+    
     return data;
   },
 
@@ -37,7 +43,7 @@ export const authService = {
       body: JSON.stringify({image: avatar}),
     });
     const data = await response.json();
-    console.log(data);
+    
     return data;
   },
 

@@ -78,7 +78,7 @@ module.exports.logOut = (req, res, next) => {
     }
 
     onlineUsers.delete(req.params.id);
-    return res.status(200).send();
+    return res.status(200).send({status: true});
   } catch (ex) {
     next(ex);
   }

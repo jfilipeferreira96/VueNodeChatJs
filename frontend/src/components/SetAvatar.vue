@@ -1,19 +1,18 @@
 <template>
   <section>
     <div class="title-container">
-        <h1>Pick an Avatar as your profile picture</h1>
+      <h1>Pick an Avatar as your profile picture</h1>
     </div>
     <div class="avatars">
         <div v-for="(avatar,index) of avatars" class="avatar">
-            <img
-                :src="`data:image/svg+xml;base64,${avatar}`"
-                alt="avatar"
-                class="avatar"
-                :class="{ selected: avatar === selectedAvatar }"
-                @click="setClickedAvatar(index)"
-            />
+          <img
+            :src="`data:image/svg+xml;base64,${avatar}`"
+            alt="avatar"
+            class="avatar"
+            :class="{ selected: avatar === selectedAvatar }"
+            @click="setClickedAvatar(index)"
+          />
         </div>
-        
     </div>
     <button class="submit-btn" @click="setProfileAvatar">
         Set as Profile Picture
@@ -26,7 +25,7 @@
 import { authService } from "../services/auth.service";
 
 export default {
-  name: "Chat",
+  name: "SetAvatar",
   components: {},
   data: function () {
     return {
