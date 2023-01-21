@@ -1,4 +1,4 @@
-import { loginRoute, registerRoute, setAvatarRoute, logoutRoute } from "./config.js";
+import { loginRoute, registerRoute, setAvatarRoute, logoutRoute, allUsersRoute } from "./config.js";
 
 export const authService = {
   async login(username, password) {
@@ -10,14 +10,14 @@ export const authService = {
       body: JSON.stringify({ username, password }),
     });
     const data = await response.json();
-    
+
     return data;
   },
 
   async logout(id) {
-    const response = await fetch(logoutRoute + '/' + id);
+    const response = await fetch(logoutRoute + "/" + id);
     const data = await response.json();
-    
+
     return data;
   },
 
@@ -30,23 +30,28 @@ export const authService = {
       body: JSON.stringify({ username, email, password }),
     });
     const data = await response.json();
-    
+
     return data;
   },
 
   async setAvatar(id, avatar) {
-    const response = await fetch(setAvatarRoute + '/' + id, {
+    const response = await fetch(setAvatarRoute + "/" + id, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify({image: avatar}),
+      body: JSON.stringify({ image: avatar }),
     });
     const data = await response.json();
-    
+
     return data;
   },
-
+  async getAllUsers(id) {
+    const response = await fetch(allUsersRoute + "/" + id);
+    const data = await response.json();
+    console.log(data);
+    return data;
+  },
 };
 
 export default authService;
