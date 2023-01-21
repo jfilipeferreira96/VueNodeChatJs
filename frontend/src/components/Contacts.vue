@@ -5,7 +5,7 @@
       <h3>Vue Chat</h3>
     </div>
     <div class="contacts">
-      <div v-for="contact of contacts" class="contact" :key="contact" :click="handleChatChange(contact)">
+      <div v-for="contact of contacts" class="contact" :key="contact" @click="handleChatChange(contact)">
         <div class="avatar">
           <img :src="`data:image/svg+xml;base64,${contact.avatarImage}`" alt="contactAvatar" />
         </div>
@@ -94,7 +94,7 @@ export default {
       min-height: 5rem;
       cursor: pointer;
       width: 90%;
-      border-radius: 0.2rem;
+      border-radius: 0.4rem;
       padding: 0.4rem;
       display: flex;
       gap: 1rem;

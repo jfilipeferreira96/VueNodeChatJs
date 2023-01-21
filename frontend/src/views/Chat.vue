@@ -9,7 +9,7 @@
     <div v-else class="container-chat">
       <Contacts :contacts="contacts" v-on:changeChat="updateCurrentChat($event)" />
 
-      <template v-if="currentChat === 1">
+      <template v-if="currentChat === null">
         <div class="RoboDiv">
           <img :src="require('../assets/robot.gif')" alt="WelcomeRobot" />
           <h1>
@@ -20,7 +20,7 @@
         </div>
       </template>
       <template v-else>
-        <ChatContainer />
+        <ChatContainer :currentChat="currentChat" />
       </template>
     </div>
   </section>
@@ -30,6 +30,8 @@
 import SetAvatar from "../components/SetAvatar.vue";
 import Contacts from "../components/Contacts.vue";
 import ChatContainer from "../components/ChatContainer.vue";
+import SocketioService from "../services/socketio.service.js";
+import { authService } from "../services/auth.service";
 
 export default {
   name: "Chat",
@@ -38,17 +40,35 @@ export default {
     Contacts,
     ChatContainer,
   },
+  created() {
+    SocketioService.setupSocketConnection(this.currentUser._id);
+    this.getContacts();
+  },
+  beforeUnmount() {
+    SocketioService.disconnect(this.currentUser._id);
+  },
   data: function () {
     return {
       currentUser: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
       currentChat: null,
       contacts: [],
+      socket: null,
     };
   },
   methods: {
     updateCurrentChat: function (newChat) {
-      console.log(newChat);
       this.currentChat = newChat;
+    },
+    async getContacts() {
+      if (this.currentUser) {
+        //pedido async
+        const data = await authService.getAllUsers(this.currentUser._id);
+        if (data) {
+          this.contacts = data;
+        } else {
+          console.log("Failed to fetch all users");
+        }
+      }
     },
   },
 };

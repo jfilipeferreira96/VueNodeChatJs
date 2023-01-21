@@ -50,7 +50,6 @@ export default {
       return true;
     },
     async register() {
-      console.log(this.username, this.password);
       if (this.username != "" && this.email != "" && this.password != "" && this.confirmPassword != "") {
         if (this.handleValidation() === true) {
           //pedido async

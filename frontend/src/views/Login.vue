@@ -30,7 +30,6 @@ export default {
   },
   methods: {
     async login() {
-      console.log(this.username, this.password);
       if (this.username != "" && this.password != "") {
         //pedido async
         const data = await authService.login(this.username, this.password);

@@ -27,14 +27,12 @@ export default {
   },
   methods: {
     fetchAvatars: async function () {
-      let tempAvatars = [];
       for (let i = 0; i < 4; i++) {
         const response = await fetch(`https://api.multiavatar.com/4645646/${Math.round(Math.random() * 1000)}`);
         const data = await response.text();
         const encodedData = btoa(unescape(encodeURIComponent(data)));
-        tempAvatars.push(encodedData);
+        this.avatars.push(encodedData);
       }
-      this.avatars.push(tempAvatars);
     },
     setClickedAvatar: function (id) {
       this.selectedAvatar = this.avatars[id];

@@ -3,17 +3,17 @@
     <div class="chat-header">
       <div class="user-details">
         <div class="avatar">
-          <!--  <img :src="`data:image/svg+xml;base64,${avatar}`" alt="avatar" /> -->
+          <img :src="`data:image/svg+xml;base64,${currentChat.avatarImage}`" alt="avatar" />
         </div>
         <div class="username">
-          <!--  <h3>{{ user.username }}</h3> -->
+          <h3>{{ currentChat.username }}</h3>
         </div>
       </div>
     </div>
     <div class="chat-messages">
       <div v-for="message of messages" class="contact" :key="message">
         <div>
-          <div :class="[message.fromSelf ? sended : recieved, message]">
+          <div class="message" :class="getClass(message)">
             <div class="content">
               <p>{{ message.message }}</p>
             </div>
@@ -21,13 +21,13 @@
         </div>
       </div>
     </div>
-    <Input />
+    <Input @messageEmit="handleSendingMessage" />
   </div>
 </template>
 
 <script>
-import { authService } from "../services/auth.service";
 import Input from "../components/Input.vue";
+import SocketioService from "../services/socketio.service.js";
 
 export default {
   name: "Contacts",
@@ -37,15 +37,36 @@ export default {
   data: function () {
     return {
       user: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
+      messages: [],
     };
   },
+  props: ["currentChat"],
   methods: {
-    handleChatChange: function (contact) {
-      this.$emit("changeChat", contact);
+    getClass: function (fromSelf) {
+      return fromSelf ? "sended" : "recieved";
+    },
+    fetchMessages: async function () {
+      //pedido async
+      const data = await SocketioService.recieveMessage(this.user._id, this.currentChat._id);
+      if (data) {
+        this.contacts = data;
+      } else {
+        console.log("Failed to fetch all users");
+      }
+    },
+    async handleSendingMessage(message) {
+      //from    to   message
+      const sendSocketMsg = await SocketioService.sendMessage(this.user._id, this.currentChat._id, message);
+      if (sendSocketMsg.status) {
+        this.messages.push({ fromSelf: true, message: message });
+      } else {
+        this.$toast.error("Couldn't send message. Something went error.");
+      }
     },
   },
   mounted() {
-    //this.fetchAvatars()
+    //this.fetchMessages()
+    console.log(this.currentChat);
   },
 };
 </script>

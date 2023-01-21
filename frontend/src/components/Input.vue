@@ -3,8 +3,8 @@
     <div class="button-container">
       <div class="emoji"></div>
     </div>
-    <form class="input-container">
-      <input type="text" placeholder="Type your message here" />
+    <form class="input-container" ref="myForm" @submit.prevent="submitMessage">
+      <input v-model="message" ref="message" name="message" type="text" placeholder="Type your message here" />
       <button type="submit">
         <img :src="require('../assets/send.svg')" />
       </button>
@@ -20,7 +20,15 @@ export default {
   data: function () {
     return {};
   },
-  methods: {},
+  methods: {
+    submitMessage() {
+      if (this.message.length > 0) {
+        //passa a mensagem para o pai e da reset ao input
+        this.$emit("messageEmit", this.message);
+        this.$refs.message.value = "";
+      }
+    },
+  },
   mounted() {},
 };
 </script>
