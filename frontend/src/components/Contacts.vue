@@ -5,67 +5,59 @@
       <h3>Vue Chat</h3>
     </div>
     <div class="contacts">
-      <div v-for="(contact,index) of contacts" class="contact" :click="handleChatChange(contact)">  
+      <div v-for="contact of contacts" class="contact" :key="contact" :click="handleChatChange(contact)">
         <div class="avatar">
-          <img
-            :src="`data:image/svg+xml;base64,${contact.avatarImage}`"
-            alt="contactAvatar"
-          />
+          <img :src="`data:image/svg+xml;base64,${contact.avatarImage}`" alt="contactAvatar" />
         </div>
-        <div class="username">  
-          <h3>{{contact.username}}</h3>
+        <div class="username">
+          <h3>{{ contact.username }}</h3>
         </div>
       </div>
     </div>
     <div class="current-user">
       <div class="avatar">
-        <img
-          :src="`data:image/svg+xml;base64,${user.avatarImage}`"
-          alt="avatar"
-        />
+        <img :src="`data:image/svg+xml;base64,${user.avatarImage}`" alt="avatar" />
       </div>
       <div class="username">
         <h2>{{ user.username }}</h2>
       </div>
       <div>
-       <LogoutButton :user="user" /> 
+        <LogoutButton :user="user" />
       </div>
     </div>
-  </div>  
+  </div>
 </template>
-
 
 <script>
 import { authService } from "../services/auth.service";
-import LogoutButton  from "../components/LogoutButton.vue";
+import LogoutButton from "../components/LogoutButton.vue";
 
 export default {
   name: "Contacts",
-  props:["contacts"],
+  props: ["contacts"],
   components: {
-    LogoutButton
+    LogoutButton,
   },
   data: function () {
     return {
-        user: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
-        contacts: [],
-        selectedContact: null,
+      user: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
+      contacts: [],
+      selectedContact: null,
     };
   },
-  methods: {  
-      handleChatChange: function (contact){
-      this.$emit('changeChat', contact);
-    }
+  methods: {
+    handleChatChange: function (contact) {
+      this.$emit("changeChat", contact);
+    },
   },
   mounted() {
     //this.fetchAvatars()
-  }
-
+  },
 };
 </script>
 
 <style lang="scss">
-.main-contacts{
+.main-contacts {
   display: grid;
   grid-template-rows: 10% 75% 15%;
   overflow: hidden;
@@ -150,7 +142,7 @@ export default {
       }
     }
   }
-  .btn-logout{
+  .btn-logout {
     display: flex;
     justify-content: center;
     align-items: center;

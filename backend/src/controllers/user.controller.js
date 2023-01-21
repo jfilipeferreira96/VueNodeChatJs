@@ -11,7 +11,7 @@ module.exports.login = async (req, res, next) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) return res.json({ msg: "Incorrect Username or Password", status: false });
 
-    return res.json({ status: true, user: { username: user.username, email: user.email, avatarImage: user.avatarImage, isAvatarImageSet: user.isAvatarImageSet } });
+    return res.json({ status: true, user: { _id: user._id, username: user.username, email: user.email, avatarImage: user.avatarImage, isAvatarImageSet: user.isAvatarImageSet } });
   } catch (ex) {
     next(ex);
   }
@@ -34,7 +34,7 @@ module.exports.register = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    return res.json({ status: true, user: { username: user.username, email: user.email, avatarImage: user.avatarImage, isAvatarImageSet: user.isAvatarImageSet } });
+    return res.json({ status: true, user: { _id: user._id, username: user.username, email: user.email, avatarImage: user.avatarImage, isAvatarImageSet: user.isAvatarImageSet } });
   } catch (ex) {
     next(ex);
   }

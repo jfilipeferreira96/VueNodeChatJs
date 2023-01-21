@@ -6,50 +6,50 @@
     </div>
 
     <!-- Chat Div -->
-    <div v-else class="container">
+    <div v-else class="container-chat">
       <Contacts :contacts="contacts" v-on:changeChat="updateCurrentChat($event)" />
-      
-      <div v-if="currentChat === null" class="RoboDiv">
-        <img :src="require('../assets/robot.gif')" alt="WelcomeRobot" />
-        <h1>
-          Welcome, <span>{{currentUser.username}}!</span>
-        </h1>
-        <h3>Please select a chat to Start messaging.</h3>
-      </div>
-      <div v-else>
-        <h2>asd</h2>
-      </div>
-    </div>
 
+      <template v-if="currentChat === 1">
+        <div class="RoboDiv">
+          <img :src="require('../assets/robot.gif')" alt="WelcomeRobot" />
+          <h1>
+            Welcome,
+            <span>{{ currentUser.username }}!</span>
+          </h1>
+          <h3>Please select a chat to Start messaging.</h3>
+        </div>
+      </template>
+      <template v-else>
+        <ChatContainer />
+      </template>
+    </div>
   </section>
 </template>
 
 <script>
-import SetAvatar from '../components/SetAvatar.vue'
-import Contacts from '../components/Contacts.vue'
+import SetAvatar from "../components/SetAvatar.vue";
+import Contacts from "../components/Contacts.vue";
+import ChatContainer from "../components/ChatContainer.vue";
 
 export default {
   name: "Chat",
   components: {
     SetAvatar,
-    Contacts
+    Contacts,
+    ChatContainer,
   },
   data: function () {
     return {
       currentUser: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
       currentChat: null,
-      contacts: []
+      contacts: [],
     };
   },
-  methods: {  
-    checkLogin: function () {
-      console.log("Validations");
-      console.log(this.currentUser.username)
-    },
-    updateCurrentChat: function (newChat){
+  methods: {
+    updateCurrentChat: function (newChat) {
       console.log(newChat);
       this.currentChat = newChat;
-    }
+    },
   },
 };
 </script>
@@ -64,7 +64,7 @@ section {
   gap: 1rem;
   align-items: center;
   background-color: #131324;
-  .container {
+  .container-chat {
     height: 85vh;
     width: 85vw;
     background-color: #00000076;
@@ -76,7 +76,7 @@ section {
   }
 }
 
-.RoboDiv{
+.RoboDiv {
   display: flex;
   justify-content: center;
   align-items: center;

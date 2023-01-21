@@ -16,7 +16,7 @@ const io = socket(server, {
 
 global.onlineUsers = new Map();
 io.on("connection", (socket) => {
-  console.log("ENTREI", socket);
+  console.log("ENTREI");
 
   global.chatSocket = socket;
   socket.on("add-user", (userId) => {
@@ -25,6 +25,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-msg", (data) => {
+    console.log(data);
     const sendUserSocket = onlineUsers.get(data.to);
     if (sendUserSocket) {
       socket.to(sendUserSocket).emit("msg-recieve", data.msg);
