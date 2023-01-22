@@ -9,6 +9,12 @@ class SocketioService {
   setupSocketConnection(user_id) {
     this.socket = io(host);
     this.socket.emit("add-user", user_id);
+
+    this.socket.on("msg-recieve", (msg) => {
+      console.log("############################################");
+      //guardar mensangem na global store
+      console.log(msg);
+    });
   }
 
   disconnect() {
