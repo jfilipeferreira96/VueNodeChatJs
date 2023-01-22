@@ -10,10 +10,10 @@
         </div>
       </div>
     </div>
-    <div class="chat-messages">
+    <div class="chat-messages" ref="msgContainer">
       <div v-for="message of messages" class="contact" :key="message">
         <div>
-          <div class="message" :class="getClass(message)">
+          <div class="message" :class="getClass(message.fromSelf)">
             <div class="content">
               <p>{{ message.message }}</p>
             </div>
@@ -41,17 +41,31 @@ export default {
     };
   },
   props: ["currentChat"],
+  updated() {
+    this.scrollToBottom();
+  },
   methods: {
+    scrollToBottom() {
+      const targetRef = this.$refs.msgContainer;
+      this.$nextTick(() => {
+        targetRef.scrollTo({
+          top: targetRef.scrollHeight,
+          left: 0,
+          behavior: "smooth",
+        });
+      });
+    },
     getClass: function (fromSelf) {
       return fromSelf ? "sended" : "recieved";
     },
     fetchMessages: async function () {
       //pedido async
       const data = await SocketioService.recieveMessage(this.user._id, this.currentChat._id);
-      if (data) {
-        this.contacts = data;
+      if (data.status) {
+        this.messages = data.allMessages;
+        window.scrollTo(0, this.$refs["msgContainer"]);
       } else {
-        console.log("Failed to fetch all users");
+        console.log("Failed to fetch messages");
       }
     },
     async handleSendingMessage(message) {
@@ -65,8 +79,9 @@ export default {
     },
   },
   mounted() {
-    //this.fetchMessages()
-    console.log(this.currentChat);
+    if (this.currentChat) {
+      this.fetchMessages();
+    }
   },
 };
 </script>

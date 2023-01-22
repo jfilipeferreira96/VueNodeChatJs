@@ -49,7 +49,7 @@ export const authService = {
   async getAllUsers(id) {
     const response = await fetch(allUsersRoute + "/" + id);
     const data = await response.json();
-    console.log(data);
+
     return data;
   },
 };

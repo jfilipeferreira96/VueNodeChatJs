@@ -7,7 +7,6 @@ class SocketioService {
   constructor() {}
 
   setupSocketConnection(user_id) {
-    console.log(user_id, host);
     this.socket = io(host);
     this.socket.emit("add-user", user_id);
   }
@@ -27,7 +26,7 @@ class SocketioService {
       body: JSON.stringify({ from: from_id, to: to_id }),
     });
     const data = await response.json();
-    console.log(data);
+
     return data;
   }
 

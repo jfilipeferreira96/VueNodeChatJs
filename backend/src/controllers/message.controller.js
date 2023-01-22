@@ -9,7 +9,7 @@ module.exports.getMessages = async (req, res, next) => {
         $all: [from, to],
       },
     }).sort({ updatedAt: 1 });
-    console.log(messages);
+
     //cria um novo array com um outra estrutura fromSelf
     const projectedMessages = messages.map((msg) => {
       return {
@@ -17,9 +17,8 @@ module.exports.getMessages = async (req, res, next) => {
         message: msg.message.text,
       };
     });
-    console.log(projectedMessages);
 
-    res.json(projectedMessages);
+    res.json({ status: true, allMessages: projectedMessages });
   } catch (ex) {
     next(ex);
   }
