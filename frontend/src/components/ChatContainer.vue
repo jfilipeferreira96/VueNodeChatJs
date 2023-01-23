@@ -113,6 +113,10 @@ export default {
       }
     }
   }
+  @media screen and  (max-width: 719px) {
+    justify-content: center;
+    align-items: flex-start;
+  }
 }
 .chat-messages {
   padding: 1rem 2rem;

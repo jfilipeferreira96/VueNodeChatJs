@@ -112,16 +112,17 @@ export default {
     align-items: center;
     background-color: #9a86f3;
     border: none;
-    @media screen and (min-width: 720px) and (max-width: 1080px) {
-      padding: 0.3rem 1rem;
-      img {
-        height: 1rem;
-      }
-    }
     img {
       height: 2rem;
       color: white;
     }
+    @media screen and  (max-width: 719px) {
+      padding: 0.3rem 1rem;
+      img {
+        height: 1.5rem;
+      }
+    }
+
   }
 }
 </style>

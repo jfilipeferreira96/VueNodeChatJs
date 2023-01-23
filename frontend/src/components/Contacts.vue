@@ -1,8 +1,11 @@
 <template>
   <div class="main-contacts">
     <div class="brand">
-      <img :src="require('../assets/logo1.png')" />
-      <h3>Vue Chat</h3>
+      <HamburguerButton></HamburguerButton>
+      <div class="center">
+          <img :src="require('../assets/logo1.png')" />
+          <h3>Vue Chat</h3>
+      </div>
     </div>
     <div class="contacts">
       <div v-for="contact of contacts" class="contact" :key="contact" @click="handleChatChange(contact)">
@@ -29,7 +32,7 @@
 </template>
 
 <script>
-import { authService } from "../services/auth.service";
+import HamburguerButton from "../components/HamburguerButton.vue";
 import LogoutButton from "../components/LogoutButton.vue";
 
 export default {
@@ -37,11 +40,12 @@ export default {
   props: ["contacts"],
   components: {
     LogoutButton,
+    HamburguerButton
   },
   data: function () {
     return {
       user: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
-      contacts: [],
+      
       selectedContact: null,
     };
   },
@@ -64,15 +68,29 @@ export default {
   background-color: #080420;
   .brand {
     display: flex;
-    align-items: center;
     gap: 1rem;
-    justify-content: center;
-    img {
-      height: 2rem;
-    }
-    h3 {
-      color: white;
-      text-transform: uppercase;
+
+    .center{
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      @media screen and (max-width: 719px) {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        width: 65vw;
+      
+      }
+      img {
+        height: 2rem;
+      }
+      h3 {
+        color: white;
+        text-transform: uppercase;
+      }
     }
   }
   .contacts {
