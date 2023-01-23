@@ -83,6 +83,11 @@ export default {
       this.fetchMessages();
     }
   },
+  watch: {
+    currentChat: function (newVal, oldVal) {
+      this.fetchMessages();
+    },
+  },
 };
 </script>
 
@@ -113,7 +118,7 @@ export default {
       }
     }
   }
-  @media screen and  (max-width: 719px) {
+  @media screen and (max-width: 719px) {
     justify-content: center;
     align-items: flex-start;
   }
