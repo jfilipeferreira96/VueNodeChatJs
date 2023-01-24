@@ -5,10 +5,10 @@
         <img :src="require('../assets/logo1.png')" />
         <h1>Register</h1>
       </div>
-      <input type="text" placeholder="Username" name="username" v-model="username" />
-      <input type="email" placeholder="Email" name="email" v-model="email" />
-      <input type="password" placeholder="Password" name="password" v-model="password" />
-      <input type="password" placeholder="Confirm Password" name="confirmPassword" v-model="confirmPassword" />
+      <input type="text" placeholder="Username" name="username" v-model="username" autocomplete="off" />
+      <input type="email" placeholder="Email" name="email" v-model="email" autocomplete="off" />
+      <input type="password" placeholder="Password" name="password" v-model="password" autocomplete="off" />
+      <input type="password" placeholder="Confirm Password" name="confirmPassword" v-model="confirmPassword" autocomplete="off" />
       <button type="submit">Create User</button>
       <span>
         Already have an account ?

@@ -5,8 +5,8 @@
         <img :src="require('../assets/logo1.png')" />
         <h1>Log in</h1>
       </div>
-      <input type="text" v-model="username" placeholder="Username" name="username" min="3" />
-      <input type="password" v-model="password" placeholder="Password" name="password" />
+      <input type="text" v-model="username" placeholder="Username" name="username" min="3" autocomplete="off" />
+      <input type="password" v-model="password" placeholder="Password" name="password" autocomplete="off" />
       <button type="submit">Log In</button>
       <span>
         Don't have an account ?
@@ -17,7 +17,6 @@
 </template>
 
 <script>
-
 export default {
   name: "LoginView",
   components: {},
@@ -30,16 +29,15 @@ export default {
   methods: {
     async login() {
       if (this.username != "" && this.password != "") {
-        this.$store.dispatch("login", {username: this.username, password: this.password})
-          .then((res) => { 
-            if (res.status){
-              this.$toast.success(`Welcome`);
-              //redirect para a página do chat
-              this.$router.push({ name: "chat" });
-            } else {
-              this.$toast.error(res.msg);
-            }
-          })
+        this.$store.dispatch("login", { username: this.username, password: this.password }).then((res) => {
+          if (res.status) {
+            this.$toast.success(`Welcome`);
+            //redirect para a página do chat
+            this.$router.push({ name: "chat" });
+          } else {
+            this.$toast.error(res.msg);
+          }
+        });
       } else {
         this.$toast.error(`Empty fields`);
       }

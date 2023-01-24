@@ -4,7 +4,7 @@
       <div class="emoji"></div>
     </div>
     <form class="input-container" ref="myForm" @submit.prevent="submitMessage">
-      <input v-model="message" ref="message" name="message" type="text" placeholder="Type your message here" />
+      <input v-model="message" ref="message" name="message" type="text" placeholder="Type your message here" autocomplete="off" />
       <button type="submit">
         <img :src="require('../assets/send.svg')" />
       </button>
@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import { authService } from "../services/auth.service";
-
 export default {
   name: "Input",
   data: function () {
@@ -116,13 +114,12 @@ export default {
       height: 2rem;
       color: white;
     }
-    @media screen and  (max-width: 719px) {
+    @media screen and (max-width: 719px) {
       padding: 0.3rem 1rem;
       img {
         height: 1.5rem;
       }
     }
-
   }
 }
 </style>
