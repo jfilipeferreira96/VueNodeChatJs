@@ -61,8 +61,10 @@ export default {
 }
 
 .avatars {
-  display: flex;
   gap: 2rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 
   .avatar {
     border: 0.4rem solid transparent;

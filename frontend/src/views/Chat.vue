@@ -11,7 +11,7 @@
         <img :src="require('../assets/Hamburger_icon.svg')" />
       </span> -->
       <HamburguerButton @click="openMenu"></HamburguerButton>
-      <Contacts :class="{ sidebarActive: sideMenuIsOpen }" id="contacts" :contacts="contacts" v-on:changeChat="updateCurrentChat($event)" />
+      <Contacts :class="{ sidebarActive: sideMenuIsOpen }" id="contacts" :contacts="contacts" v-on:changeChat="updateCurrentChat($event)" v-on:menuPressed="openMenu" />
 
       <template v-if="currentChat === null">
         <div id="robo" class="RoboDiv">

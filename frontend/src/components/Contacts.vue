@@ -1,7 +1,7 @@
 <template>
   <div class="main-contacts">
     <div class="brand">
-      <HamburguerButton></HamburguerButton>
+      <HamburguerButton @click="emitClick"></HamburguerButton>
       <div class="center">
           <img :src="require('../assets/logo1.png')" />
           <h3>Vue Chat</h3>
@@ -50,6 +50,9 @@ export default {
   methods: {
     handleChatChange: function (contact) {
       this.$emit("changeChat", contact);
+    },
+    emitClick: function () {
+      this.$emit("menuPressed", );
     },
   },
   mounted() {
