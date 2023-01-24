@@ -89,10 +89,9 @@ export default {
     },
   },
   watch: {
-    messageRecivied(value) {
+    messageRecivied(incomingMessage) {
       let oldMessages = this.messages;
-      this.messages = [...oldMessages, value];
-      console.log(value);
+      this.messages = [...oldMessages, incomingMessage];
     },
     currentChat: function (newVal, oldVal) {
       this.fetchMessages();
