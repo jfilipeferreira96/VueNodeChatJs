@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Input from "../components/Input.vue";
 import SocketioService from "../services/socketio.service.js";
 
@@ -82,7 +83,17 @@ export default {
       this.fetchMessages();
     }
   },
+  computed: {
+    messageRecivied() {
+      return this.$store.getters.getPendingMessage;
+    },
+  },
   watch: {
+    messageRecivied(value) {
+      let oldMessages = this.messages;
+      this.messages = [...oldMessages, value];
+      console.log(value);
+    },
     currentChat: function (newVal, oldVal) {
       this.fetchMessages();
     },

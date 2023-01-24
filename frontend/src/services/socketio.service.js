@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 import { host } from "./config";
 import { sendMessageRoute, recieveMessageRoute } from "./config.js";
+import store from "../store/index";
 
 class SocketioService {
   socket;
@@ -11,9 +12,8 @@ class SocketioService {
     this.socket.emit("add-user", user_id);
 
     this.socket.on("msg-recieve", (msg) => {
-      console.log("############################################");
-      //guardar mensangem na global store
-      console.log(msg);
+      store.state.pendingMessage = { fromSelf: false, message: msg };
+      // store.dispatch("updateReciviedMessage", { fromSelf: false, message: msg });
     });
   }
 

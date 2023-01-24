@@ -7,9 +7,6 @@
 
     <!-- Chat Div -->
     <div v-else class="container-chat">
-    <!--   <span class="btn-menu" >
-        <img :src="require('../assets/Hamburger_icon.svg')" />
-      </span> -->
       <HamburguerButton @click="openMenu"></HamburguerButton>
       <Contacts :class="{ sidebarActive: sideMenuIsOpen }" id="contacts" :contacts="contacts" v-on:changeChat="updateCurrentChat($event)" v-on:menuPressed="openMenu" />
 
@@ -24,7 +21,7 @@
         </div>
       </template>
       <template v-else>
-        <ChatContainer id="chat"  :currentChat="currentChat" />
+        <ChatContainer id="chat" :currentChat="currentChat" />
       </template>
     </div>
   </section>
@@ -46,12 +43,12 @@ export default {
     HamburguerButton,
     ChatContainer,
   },
-  mounted(){
+  mounted() {
     //este metodo recebe a width da janela para fechar o sidemenu caso esteja aberto num resizing
-    this.$nextTick(function() {
-      window.addEventListener('resize', this.getWindowWidth);
-      this.getWindowWidth()
-    })
+    this.$nextTick(function () {
+      window.addEventListener("resize", this.getWindowWidth);
+      this.getWindowWidth();
+    });
   },
   created() {
     SocketioService.setupSocketConnection(this.$store.state.user._id);
@@ -73,12 +70,12 @@ export default {
     updateCurrentChat: function (newChat) {
       this.currentChat = newChat;
     },
-    openMenu: function (){
+    openMenu: function () {
       this.sideMenuIsOpen = !this.sideMenuIsOpen;
     },
-     getWindowWidth(event) {
-      if (document.documentElement.clientWidth < 719 && this.sideMenuIsOpen){
-         this.sideMenuIsOpen = false;
+    getWindowWidth(event) {
+      if (document.documentElement.clientWidth < 719 && this.sideMenuIsOpen) {
+        this.sideMenuIsOpen = false;
       }
     },
     async getContacts() {
@@ -112,40 +109,40 @@ section {
     background-color: #00000076;
     display: grid;
     grid-template-columns: 25% 75%;
-    grid-template-areas:
-    "sidebar main";
-    
+    grid-template-areas: "sidebar main";
+
     @media screen and (min-width: 720px) and (max-width: 1080px) {
       grid-template-columns: 35% 65%;
     }
 
-    #contacts{
+    #contacts {
       grid-area: sidebar;
       overflow-y: auto;
       -webkit-transition: all 0.5s;
       transition: all 0.5s;
     }
-    #robo, #chat{
+    #robo,
+    #chat {
       grid-area: main;
     }
 
-    @media screen and  (max-width: 719px) {
+    @media screen and (max-width: 719px) {
       height: 100vh;
       width: 100vw;
       grid-template-areas:
-      "header header"
-      "main main";
+        "header header"
+        "main main";
       grid-template-rows: 55px 1fr;
-      #contacts{
+      #contacts {
         display: none;
       }
     }
-    
-    .sidebarActive{
+
+    .sidebarActive {
       display: grid !important;
       z-index: 9999 !important;
       left: 0 !important;
-      top: 0!important;
+      top: 0 !important;
       position: absolute;
       width: 100vw;
       height: -webkit-fill-available;
