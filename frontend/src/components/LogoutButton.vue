@@ -6,11 +6,9 @@
 
 
 <script>
-import { authService } from "../services/auth.service";
-
 export default {
   name: "LogoutOut",
-  props:["user"],
+  props:[""],
   data: function () {
     return {
 
@@ -18,15 +16,15 @@ export default {
   },
   methods: {  
     handleLogout: async function (){
-        const data = await authService.logout(this.user._id);
-        if (data.status) {
-          this.$toast.success(`Bye!`);
-          //redirect para a página do login
-          localStorage.clear();
-          this.$router.push({ name: "login" });
-        } else {
-          this.$toast.error("Something went wrong when logging out.");
-        }
+      this.$store.dispatch("logout", {_id: this.$store.state.user._id})
+        .then((res) => { 
+          if (res.status){
+            this.$toast.success(`Bye!`);
+            this.$router.push({ name: "login" });
+          } else {
+            this.$toast.error("Something went wrong when logging out.");
+          }
+        })
     }
   },
   mounted() {

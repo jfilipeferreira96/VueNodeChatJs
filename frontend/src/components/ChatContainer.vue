@@ -36,7 +36,6 @@ export default {
   },
   data: function () {
     return {
-      user: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
       messages: [],
     };
   },
@@ -60,7 +59,7 @@ export default {
     },
     fetchMessages: async function () {
       //pedido async
-      const data = await SocketioService.recieveMessage(this.user._id, this.currentChat._id);
+      const data = await SocketioService.recieveMessage(this.$store.state.user._id, this.currentChat._id);
       if (data.status) {
         this.messages = data.allMessages;
         window.scrollTo(0, this.$refs["msgContainer"]);
@@ -70,7 +69,7 @@ export default {
     },
     async handleSendingMessage(message) {
       //from    to   message
-      const sendSocketMsg = await SocketioService.sendMessage(this.user._id, this.currentChat._id, message);
+      const sendSocketMsg = await SocketioService.sendMessage(this.$store.state.user._id, this.currentChat._id, message);
       if (sendSocketMsg.status) {
         this.messages.push({ fromSelf: true, message: message });
       } else {

@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import LoginView from "../views/Login.vue";
+import store from '../store/index';
 
 const routes = [
   {
@@ -51,7 +51,7 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     if (!localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)) {
       next({ name: "login" });
-    } else {
+    } else{
       next(); // go to wherever I'm going
     }
   } else {

@@ -19,8 +19,6 @@
 </template>
 
 <script>
-import { authService } from "../services/auth.service";
-
 export default {
   name: "RegisterView",
   components: {},
@@ -51,19 +49,19 @@ export default {
     },
     async register() {
       if (this.username != "" && this.email != "" && this.password != "" && this.confirmPassword != "") {
-        if (this.handleValidation() === true) {
-          //pedido async
-          const data = await authService.register(this.username, this.email, this.password);
-          if (data.status) {
-            this.$toast.success(`Success!`);
-            //redirect para a página do chat
-            localStorage.setItem(process.env.VUE_APP_LOCALHOSTKEY, JSON.stringify(data.user));
-            this.$router.push({ name: "chat" });
-          } else {
-            this.$toast.error(data.msg);
-          }
+        if (this.handleValidation() === true){
+          
+          this.$store.dispatch("register", {username: this.username, email: this.email, password: this.password}).then((res) => { 
+            if (res.status){
+               this.$toast.success(`Success!`);
+                //redirect para a página do chat
+                this.$router.push({ name: "chat" });
+            } else {
+                this.$toast.error(res.msg);
+            }
+          })
+          
         }
-        return;
       } else {
         this.$toast.error(`Empty fields`);
       }

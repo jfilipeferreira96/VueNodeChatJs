@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { authService } from "../services/auth.service";
 
 export default {
   name: "LoginView",
@@ -31,16 +30,16 @@ export default {
   methods: {
     async login() {
       if (this.username != "" && this.password != "") {
-        //pedido async
-        const data = await authService.login(this.username, this.password);
-        if (data.status) {
-          this.$toast.success(`Success!`);
-          //redirect para a página do chat
-          localStorage.setItem(process.env.VUE_APP_LOCALHOSTKEY, JSON.stringify(data.user));
-          this.$router.push({ name: "chat" });
-        } else {
-          this.$toast.error(data.msg);
-        }
+        this.$store.dispatch("login", {username: this.username, password: this.password})
+          .then((res) => { 
+            if (res.status){
+              this.$toast.success(`Welcome`);
+              //redirect para a página do chat
+              this.$router.push({ name: "chat" });
+            } else {
+              this.$toast.error(res.msg);
+            }
+          })
       } else {
         this.$toast.error(`Empty fields`);
       }

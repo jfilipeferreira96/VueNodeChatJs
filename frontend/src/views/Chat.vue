@@ -1,7 +1,7 @@
 <template>
   <section>
     <!-- Select User Avatar -->
-    <div v-if="currentUser.isAvatarImageSet === false">
+    <div v-if="$store.state.user.isAvatarImageSet === false">
       <SetAvatar />
     </div>
 
@@ -18,7 +18,7 @@
           <img :src="require('../assets/robot.gif')" alt="WelcomeRobot" />
           <h1>
             Welcome,
-            <span>{{ currentUser.username }}!</span>
+            <span>{{ $store.state.user.username }}!</span>
           </h1>
           <h3>Please select a chat to Start messaging.</h3>
         </div>
@@ -54,15 +54,14 @@ export default {
     })
   },
   created() {
-    SocketioService.setupSocketConnection(this.currentUser._id);
+    SocketioService.setupSocketConnection(this.$store.state.user._id);
     this.getContacts();
   },
   beforeUnmount() {
-    SocketioService.disconnect(this.currentUser._id);
+    SocketioService.disconnect(this.$store.state.user._id);
   },
   data: function () {
     return {
-      currentUser: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
       currentChat: null,
       contacts: [],
       socket: null,
@@ -83,9 +82,9 @@ export default {
       }
     },
     async getContacts() {
-      if (this.currentUser) {
+      if (this.$store.state.user) {
         //pedido async
-        const data = await authService.getAllUsers(this.currentUser._id);
+        const data = await authService.getAllUsers(this.$store.state.user._id);
         if (data) {
           this.contacts = data;
         } else {

@@ -20,7 +20,6 @@ export default {
   components: {},
   data: function () {
     return {
-      user: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
       avatars: [],
       selectedAvatar: null,
     };
@@ -41,16 +40,12 @@ export default {
       if (this.selectedAvatar === null) {
         this.$toast.error("Please select an avatar");
       } else {
-        const data = await authService.setAvatar(this.user._id, this.selectedAvatar);
-        if (data.isSet) {
-          this.user.isAvatarImageSet = true;
-          this.user.avatarImage = data.image;
-
-          localStorage.setItem(process.env.VUE_APP_LOCALHOSTKEY, JSON.stringify(this.user));
-          //colocar um emit para setar o localStorage mas dentro do componente Chat.vue
-        } else {
-          this.$toast.error("Error setting avatar. Please try again.");
-        }
+        this.$store.dispatch("setAvatar", {_id: this.$store.state.user._id, selectedAvatar: this.selectedAvatar})
+        .then((res) => { 
+          if (!res.isSet){
+            this.$toast.error("Error setting avatar. Please try again.");
+          }
+        })
       }
     },
   },

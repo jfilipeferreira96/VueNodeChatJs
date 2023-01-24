@@ -43,7 +43,7 @@ export const authService = {
       body: JSON.stringify({ image: avatar }),
     });
     const data = await response.json();
-
+    
     return data;
   },
   async getAllUsers(id) {

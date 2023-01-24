@@ -19,13 +19,13 @@
     </div>
     <div class="current-user">
       <div class="avatar">
-        <img :src="`data:image/svg+xml;base64,${user.avatarImage}`" alt="avatar" />
+        <img :src="`data:image/svg+xml;base64,${this.$store.state.user.avatarImage}`" alt="avatar" />
       </div>
       <div class="username">
-        <h2>{{ user.username }}</h2>
+        <h2>{{ this.$store.state.user.username }}</h2>
       </div>
       <div>
-        <LogoutButton :user="user" />
+        <LogoutButton />
       </div>
     </div>
   </div>
@@ -44,8 +44,6 @@ export default {
   },
   data: function () {
     return {
-      user: JSON.parse(localStorage.getItem(process.env.VUE_APP_LOCALHOSTKEY)),
-      
       selectedContact: null,
     };
   },
