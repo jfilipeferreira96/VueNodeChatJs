@@ -6,7 +6,7 @@ mongoose.set("strictQuery", true);
 
 //Conexão à Base de Dados:
 mongoose
-  .connect(database.local.localUrlDatabase)
+  .connect("mongodb+srv://filipe:filipe@cluster0.wkmk1ct.mongodb.net/?retryWrites=true&w=majority")
   .then(() => {
     console.log("Connected to Database");
   })
