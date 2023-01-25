@@ -32,8 +32,8 @@ export default createStore({
     SET_USER(state, payload) {
       state.user = payload;
     },
-    SET_RECIVIED_MESSAGE(state, payload) {
-      state.lastMessage = payload;
+    SET_RECIVIED_MESSAGE(state, payload){
+      state.pendingMessage = payload;
     },
   },
   actions: {

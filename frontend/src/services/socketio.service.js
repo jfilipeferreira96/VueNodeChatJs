@@ -12,8 +12,7 @@ class SocketioService {
     this.socket.emit("add-user", user_id);
 
     this.socket.on("msg-recieve", (msg) => {
-      store.state.pendingMessage = { fromSelf: false, message: msg };
-      // store.dispatch("updateReciviedMessage", { fromSelf: false, message: msg });
+      store.dispatch("updateReciviedMessage", { fromSelf: false, message: msg });
     });
   }
 

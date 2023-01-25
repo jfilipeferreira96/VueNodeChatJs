@@ -56,7 +56,6 @@ export default {
     },
   },
   mounted() {
-    //this.fetchAvatars()
   },
 };
 </script>
