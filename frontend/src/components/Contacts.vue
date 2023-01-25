@@ -19,7 +19,7 @@
     </div>
     <div class="current-user">
       <div class="avatar">
-        <img :src="`data:image/svg+xml;base64,${this.$store.state.user.avatarImage}`" alt="avatar" />
+        <img :src="this.$store.state.user.avatarImage ? `data:image/svg+xml;base64,${this.$store.state.user.avatarImage}` : null" alt="avatar" />
       </div>
       <div class="username">
         <h2>{{ this.$store.state.user.username }}</h2>
