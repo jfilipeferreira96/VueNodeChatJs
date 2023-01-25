@@ -6,10 +6,12 @@ const server = app.listen(port, () => {
   console.log(`Server is running on Port ${port}`);
 });
 
+const frontend_app = process.env.NODE_ENV === 'development' ? "http://localhost:8080" : "https://vue-node-chat-js.vercel.app";
+
 //Socket configuration
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:8080", // Frontend app
+    origin: frontend_app, // Frontend app host
     credentials: true,
   },
 });
